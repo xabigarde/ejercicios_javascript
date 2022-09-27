@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<script>
+  function ordenarPersonas(personArray) {
+    return personArray.sort(function (a, b) {
+      if (a.age < b.age) {
+        return -1;
+      }
+      if (a.age > b.age) {
+        return 1;
+      }
+
+
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }
+
+  function personArrayToString(personArray) {
+    const stringArray = personArray.map(function (x) {
+      return x.name + ' ' + x.age + '<br>';
+    })
+    return stringArray.join("");
+  }
+
+  function myFunction() {
+    const items = [
+      { name: 'Jon', age: 50 },
+      { name: 'Oliver', age: 20 },
+      { name: 'Juan', age: 25 },
+      { name: 'Amaia', age: 25 }
+    ];
+    document.getElementById("demo").innerHTML = personArrayToString(ordenarPersonas(items));
+  }
+</script>
+
+<body>
+  <h1>Ejercicios JavaScript</h1>
+  <h2>Ejercicio 5</h2>
+  <p><strong>Enunciado:</strong> Dado un array de Personas, devuelve un nuevo array con las mismas personas, ordenadas
+    según 1) edad, y 2) Nombre (en caso de misma edad, ordenar alfabéticamente).
+    Ejemplo de objetos simples de personas:</p>
+  <pre>
+    const personA = {name:"Jon", age:50};
+    const personB = {name:"Oliver", age:20};
+    const personC = {name:"Juan", age:25};
+    const personD = {name:"Amaia", age:25};
+  </pre>
+  <p>Ejemplo de array de personas desordenado:</p>
+  <pre>
+    personas = [{name:"John", age:50}, {name:"Oliver", age:25}, {name:"Juan", age:25}, {name:"Amaia", age:25}]
+  </pre>
+
+  <p>Resultado esperado:</p>
+  <pre>
+    const personasOrdenado = [ {name:"Oliver", age:20}, {name:"Amaia", age:25}, {name:"Juan", age:25}, {name:"Jon", age:50} ]
+  </pre>
+
+  <button onclick="myFunction()">Evaluar</button>
+  <p id="demo">RESULTADO</p>
+</body>
+
+</html>

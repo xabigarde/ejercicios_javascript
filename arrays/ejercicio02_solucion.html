@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<script>
+  function myFunction() {
+    //let numeros = [-5, 0, 6, 1, 6, -5, 6, 8, 2, 1];
+    let numeros = [0, 1, 2, 2, 3, 4, 5];
+    document.getElementById("result").innerHTML = pares(numeros);
+  }
+
+  function pares(array) {
+    let pares = [];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] % 2 == 0)
+        pares.push(array[i]);
+    }
+    return pares;
+  }
+</script>
+
+<body>
+  <h1>Ejercicios JavaScript</h1>
+  <h2>Ejercicio 2 - SOLUCIÓN</h2>
+  <p><strong>Enunciado:</strong> Crea una función que dado un array de números enteros (positivos y negativos), devuelve
+    un nuevo array compuesto sólamente de los números pares del array original. Puntos extra si no se repiten los
+    valores del nuevo array. </p>
+  <pre>
+    function pares(array){
+      // return array_de_pares
+    }
+  </pre>
+  <button onclick="myFunction()">Evaluar</button>
+  <p id="result">RESULTADO</p>
+</body>
+
+</html>
