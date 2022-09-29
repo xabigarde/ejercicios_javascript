@@ -4,7 +4,6 @@
 <head>
   <script src="funciones_arrays.js"></script>
   <script>
-
     function generarEjemploAleatorio() {
       const randIntArray = getRndIntArray(10);
       for (let i = 1; i <= 5; i++) {
@@ -34,34 +33,33 @@
 
 
     function intentarEjercicioX(n) {
-      const userInputId = "input" + n;
-      const userInputElement = document.getElementById(userInputId);
-      const feedbackId = "readInput" + n;
-      const resultId = "result" + n;
+      const userInputElement = document.getElementById("input" + n);
+      const feedbackElement =  document.getElementById("readInput" + n);
+      const resultElement =  document.getElementById("result" + n);
       let numeros = null;
       try {
         // Primero reseteamos los mensajes de error anteriores
-        document.getElementById(userInputId).style.borderColor = null;
-        document.getElementById(userInputId).style.color = null;
-        document.getElementById(feedbackId).innerHTML = "";
-        document.getElementById(resultId).innerHTML = "";
+        userInputElement.style.borderColor = null;
+        userInputElement.style.color = null;
+        feedbackElement.innerHTML = "";
+        resultElement.innerHTML = "";
 
-        numeros = capturarInputDelUsuario(userInputId); // es posible recibir error InvalidInput
-        document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
+        numeros = capturarInputDelUsuario("input"+n); // es posible recibir error InvalidInput
+        feedbackElement.innerHTML = "[" + numeros + "]";
 
         window["ejercicio" + n](numeros); // Llamar a cada ejercicio mediante dynamic function naming
       } catch (error) {
         if (error.name == "InvalidInput") {
-          document.getElementById(resultId).innerHTML = "Ha ocurrido un error tipo 'InvalidInput': "+error.message;
-          document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
-          document.getElementById(userInputId).style.borderColor = "red";
-          document.getElementById(userInputId).style.borderBlockStyle = "dashed";
-          document.getElementById(userInputId).style.color = "red";
+          resultElement.innerHTML = "Ha ocurrido un error tipo 'InvalidInput': "+error.message;
+          feedbackElement.innerHTML = "[" + numeros + "]";
+          userInputElement.style.borderColor = "red";
+          userInputElement.style.borderBlockStyle = "dashed";
+          userInputElement.style.color = "red";
         } else {
-          document.getElementById(resultId).innerHTML = "Error desconocido tipo '"+error.name+"' " + error.message;
-          document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
-          document.getElementById(userInputId).style.borderColor = "red";
-          document.getElementById(userInputId).style.color = "red";
+          resultElement.innerHTML = "Error desconocido tipo '"+error.name+"' " + error.message;
+          feedbackElement.innerHTML = "[" + numeros + "]";
+          userInputElement.style.borderColor = "red";
+          userInputElement.style.color = "red";
         }
       }
     }
