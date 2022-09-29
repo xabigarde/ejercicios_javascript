@@ -17,7 +17,6 @@
     }
 
     function validarYCapturarInput(inputId, errorMessageId) {
-      ;
       try {
         return capturarInputDelUsuario(inputId);
       } catch (error) {
@@ -35,22 +34,34 @@
 
 
     function intentarEjercicioX(n) {
-      const resultId = "result" + n;
       const userInputId = "input" + n;
-      const feedbackId = "readInput"+n;
+      const userInputElement = document.getElementById(userInputId);
+      const feedbackId = "readInput" + n;
+      const resultId = "result" + n;
+      let numeros = null;
       try {
-        const numeros = capturarInputDelUsuario(userInputId);
+        // Primero reseteamos los mensajes de error anteriores
+        document.getElementById(userInputId).style.borderColor = null;
+        document.getElementById(userInputId).style.color = null;
+        document.getElementById(feedbackId).innerHTML = "";
+        document.getElementById(resultId).innerHTML = "";
+
+        numeros = capturarInputDelUsuario(userInputId); // es posible recibir error InvalidInput
         document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
 
         window["ejercicio" + n](numeros); // Llamar a cada ejercicio mediante dynamic function naming
       } catch (error) {
         if (error.name == "InvalidInput") {
-          document.getElementById(resultId).innerHTML = error.message;
+          document.getElementById(resultId).innerHTML = "Ha ocurrido un error tipo 'InvalidInput': "+error.message;
+          document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
+          document.getElementById(userInputId).style.borderColor = "red";
+          document.getElementById(userInputId).style.borderBlockStyle = "dashed";
+          document.getElementById(userInputId).style.color = "red";
+        } else {
+          document.getElementById(resultId).innerHTML = "Error desconocido tipo '"+error.name+"' " + error.message;
           document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
           document.getElementById(userInputId).style.borderColor = "red";
           document.getElementById(userInputId).style.color = "red";
-        } else {
-          document.getElementById(resultId).innerHTML = "Error desconocido: " + error.message;
         }
       }
     }
@@ -106,7 +117,7 @@
     <button type="button" onclick="intentarEjercicioX(1)">Ejercicio 1</button>
     <input list="numberArray" type="text" id="input1" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
     <datalist id="numberArray">
-      <option value="-2,-1, 1, 2, 3, 4, 5"></option>
+      <option value="-24,-1, 1, 2, 3, 4, 5"></option>
       <option value="-5, 0, 6, 1, 6,-5, 6, 8, 2, 1"></option>
       <option value="-5, 0, 6, 1, 6,-5, 6, 8, 2, 1"></option>
       <option value="-2,-1, 0, 1, 2, 3, 4, 5"></option>

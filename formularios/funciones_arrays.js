@@ -1,8 +1,10 @@
+
 /**
  * Verifica si el array está ordenado o no.
- * @param {integer[]} intArray - El array de números enteros
+ * @param {Number[]} intArray - El array de números enteros
  * @return {boolean} - TRUE si {intArray} está ordenado. FALSE si intArray no está ordenado
- *                      O si intArray está vacío. 
+ *                      O si intArray está vacío.
+ * @throws ConjuntoVacio - Si el conjunto está vacío lanza un error porque no se puede verificar su orden
  * */
 function arrayOrdenado(intArray) {
   if(intArray.length == 0){
