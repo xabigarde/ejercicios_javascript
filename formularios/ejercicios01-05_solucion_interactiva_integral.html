@@ -2,44 +2,75 @@
 <html>
 
 <head>
-  <script src="funciones_arrays.js"></script> 
+  <script src="funciones_arrays.js"></script>
   <script>
 
-    function generarEjemploAleatorio(){
+    function generarEjemploAleatorio() {
       const randIntArray = getRndIntArray(10);
-      for(let i=1; i<=5; i++){
-        document.getElementById("input"+i).value = randIntArray.toString();
-        
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("input" + i).value = randIntArray.toString();
+
         window["ejercicio" + i](); // Dynamic function call through Window object
         // https://www.geeksforgeeks.org/how-to-use-dynamic-variable-names-in-javascript/
         // https://stackoverflow.com/questions/969743/how-do-i-call-a-dynamically-named-method-in-javascript
       }
     }
 
-    function ejercicio1() {
-      const numeros = capturarInputDelUsuario("input1");
-      document.getElementById("readInput").innerHTML = "[" + numeros + "]";
+    function validarYCapturarInput(inputId, errorMessageId) {
+      ;
+      try {
+        return capturarInputDelUsuario(inputId);
+      } catch (error) {
+        if (error.name == "EmptyInput") {
+          document.getElementById(inputId).style.borderColor = "red";
+          document.getElementById(errorMessageId).innerHTML = error.message;
+          return [];
+        } else if (error.name == "InvalidInput") {
+          document.getElementById(inputId).style.borderColor = "red";
+          document.getElementById(errorMessageId).innerHTML = error.message;
+          return null;
+        }
+      }
+    }
+
+
+    function intentarEjercicioX(n) {
+      const resultId = "result" + n;
+      const userInputId = "input" + n;
+      const feedbackId = "readInput"+n;
+      try {
+        const numeros = capturarInputDelUsuario(userInputId);
+        document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
+
+        window["ejercicio" + n](numeros); // Llamar a cada ejercicio mediante dynamic function naming
+      } catch (error) {
+        if (error.name == "InvalidInput") {
+          document.getElementById(resultId).innerHTML = error.message;
+          document.getElementById(feedbackId).innerHTML = "[" + numeros + "]";
+          document.getElementById(userInputId).style.borderColor = "red";
+          document.getElementById(userInputId).style.color = "red";
+        } else {
+          document.getElementById(resultId).innerHTML = "Error desconocido: " + error.message;
+        }
+      }
+    }
+
+    function ejercicio1(numeros) {
       if (arrayOrdenado(numeros))
         document.getElementById("result1").innerHTML = "Sí";
       else
         document.getElementById("result1").innerHTML = "NO";
     }
 
-    function ejercicio2() {
-      const numeros = capturarInputDelUsuario("input2");
-      document.getElementById("readInput2").innerHTML = "[" + numeros + "]";
+    function ejercicio2(numeros) {
       document.getElementById("result2").innerHTML = "[" + extraerListaDePares(numeros) + "]";
     }
 
-    function ejercicio3() {
-      const numeros = capturarInputDelUsuario("input3");
-      document.getElementById("readInput3").innerHTML = "[" + numeros + "]";
+    function ejercicio3(numeros) {
       document.getElementById("result3").innerHTML = "[" + elementosSinRepetir(numeros) + "]";
     }
 
-    function ejercicio4() {
-      const numeros = capturarInputDelUsuario("input4");
-      document.getElementById("readInput4").innerHTML = "[" + numeros + "]";
+    function ejercicio4(numeros) {
       document.getElementById("result4").innerHTML = "[" + invertido(numeros) + "]";
     }
 
@@ -51,17 +82,28 @@
       document.getElementById("result5").innerHTML = "[" + str + "]";
     }
 
+    function intentarAñadirPersona() {
+      try {
+        añadirPersonaALaLista('inputNombre', 'inputEdad');
+      } catch (error) {
+        document.getElementById("mensajeErrorEj5").innerHTML = "Input incorrecto. Por favor introduce un nombre y una edad validos. " + error.message;
+      }
+    }
+
   </script>
 </head>
 
 <body>
 
   <h1>Ejercicios JavaScript</h1>
-  <button onclick="generarEjemploAleatorio()">Generar ejemplo</button><hr>
+  <button style="display: none;" onclick="generarEjemploAleatorio()">Generar ejemplo</button>
+  <hr>
+
+
   <p><strong>Ejercicio 1:</strong> Dado un array de números enteros identifica si el array está ordenado de manera
     ascendente o no. </p>
   <form>
-    <button type="button" onclick="ejercicio1()">Ejercicio 1</button>
+    <button type="button" onclick="intentarEjercicioX(1)">Ejercicio 1</button>
     <input list="numberArray" type="text" id="input1" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
     <datalist id="numberArray">
       <option value="-2,-1, 1, 2, 3, 4, 5"></option>
@@ -72,98 +114,101 @@
     </datalist>
   </form>
 
-  <p>Input del usuario: <span id="readInput"></span></p>
+  <p>Input del usuario: <span id="readInput1"></span></p>
   <p>EJERCICIO 1: Está el array ordenado? <span id="result1"></span></p>
   <hr>
 
   <!--------------------------------------------------------------->
-  <p><strong>Ejercicio 2:</strong> Crea una función que dado un array de números enteros (positivos y
-    negativos),
-    devuelve
-    un nuevo array compuesto sólamente de los números pares del array original. Puntos extra si no se repiten los
-    valores del nuevo array. </p>
-  <pre>
+  <section>
+    <p><strong>Ejercicio 2:</strong> Crea una función que dado un array de números enteros (positivos y
+      negativos),
+      devuelve
+      un nuevo array compuesto sólamente de los números pares del array original. Puntos extra si no se repiten los
+      valores del nuevo array. </p>
+    <pre>
         function pares(array){
         // return array_de_pares
         }
 </pre>
-  <form>
-    <button type="button" onclick="ejercicio2()">Ejercicio 2</button>
-    <input list="numberArray" type="text" id="input2" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
-  </form>
+    <form>
+      <button type="button" onclick="intentarEjercicioX(2)">Ejercicio 2</button>
+      <input list="numberArray" type="text" id="input2" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
+    </form>
 
-  <p>Input del usuario: <span id="readInput2"></span></p>
-  <p>EJERCICIO 2: Array de pares: <span id="result2"></span></p>
-  <hr>
+    <p>Input del usuario: <span id="readInput2"></span></p>
+    <p>EJERCICIO 2: Array de pares: <span id="result2"></span></p>
+    <hr>
 
-  <!--------------------------------------------------------------->
-  <p><strong>Ejercicio 3:</strong> Dado un array de números enteros, devuelve un nuevo array en el que no haya valores
-    repetidos. Por ejemplo:
-  </p>
-  <pre>
+    <!--------------------------------------------------------------->
+    <p><strong>Ejercicio 3:</strong> Dado un array de números enteros, devuelve un nuevo array en el que no haya valores
+      repetidos. Por ejemplo:
+    </p>
+    <pre>
     [-5,0,6,1,6,-5,6,8,2,1] => [-5,0,6,1,8,2] 
   </pre>
-  <form>
-    <button type="button" onclick="ejercicio3()">Ejercicio 3</button>
-    <input list="numberArray" type="text" id="input3" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
-  </form>
+    <form>
+      <button type="button" onclick="intentarEjercicioX(3)">Ejercicio 3</button>
+      <input list="numberArray" type="text" id="input3" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
+    </form>
 
-  <p>Input del usuario: <span id="readInput3"></span></p>
-  <p>EJERCICIO 3: Array sin elementos repetidos: <span id="result3"></span></p>
-  <hr>
+    <p>Input del usuario: <span id="readInput3"></span></p>
+    <p>EJERCICIO 3: Array sin elementos repetidos: <span id="result3"></span></p>
+    <hr>
 
 
-  <!--------------------------------------------------------------->
-  <p><strong>Ejercicio 4:</strong> Dado un array de números enteros, devuelve un nuevo array en el que no haya valores
-    repetidos. Por ejemplo:
-  </p>
-  <pre>
+    <!--------------------------------------------------------------->
+    <p><strong>Ejercicio 4:</strong> Dado un array de números enteros, devuelve un nuevo array en el que no haya valores
+      repetidos. Por ejemplo:
+    </p>
+    <pre>
     [-5,0,6,1,6,-5,6,8,2,1] => [-5,0,6,1,8,2] 
   </pre>
-  <form>
-    <button type="button" onclick="ejercicio4()">Ejercicio 4</button>
-    <input list="numberArray" type="text" id="input4" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
-  </form>
+    <form>
+      <button type="button" onclick="intentarEjercicioX(4)">Ejercicio 4</button>
+      <input list="numberArray" type="text" id="input4" placeholder="-2,-1, 0, 1, 2, 3, 4, 5..."><br>
+    </form>
 
-  <p>Input del usuario: <span id="readInput4"></span></p>
-  <p>EJERCICIO 4: Array en orden inverso: <span id="result4"></span></p>
-  <hr>
+    <p>Input del usuario: <span id="readInput4"></span></p>
+    <p>EJERCICIO 4: Array en orden inverso: <span id="result4"></span></p>
+    <hr>
 
-  <!--------------------------------------------------------------->
-  <p><strong>Ejercicio 5:</strong> Dado un array de Personas, devuelve un nuevo array con las mismas personas, ordenadas
-    según 1) edad, y 2) Nombre (en caso de misma edad, ordenar alfabéticamente).
-    Ejemplo de objetos simples de personas:</p>
-  <pre>
+    <!--------------------------------------------------------------->
+    <p><strong>Ejercicio 5:</strong> Dado un array de Personas, devuelve un nuevo array con las mismas personas,
+      ordenadas
+      según 1) edad, y 2) Nombre (en caso de misma edad, ordenar alfabéticamente).
+      Ejemplo de objetos simples de personas:</p>
+    <pre>
     const personA = {name:"Jon", age:50};
     const personB = {name:"Oliver", age:20};
     const personC = {name:"Juan", age:25};
     const personD = {name:"Amaia", age:25};</pre>
-  <p>Ejemplo de array de personas desordenado:</p>
-  <pre>
+    <p>Ejemplo de array de personas desordenado:</p>
+    <pre>
     personas = [{name:"John", age:50}, {name:"Oliver", age:25}, {name:"Juan", age:25}, {name:"Amaia", age:25}]</pre>
-  <p>Resultado esperado:</p>
-  <pre>
+    <p>Resultado esperado:</p>
+    <pre>
     const personasOrdenado = [ {name:"Oliver", age:20}, {name:"Amaia", age:25}, {name:"Juan", age:25}, {name:"Jon", age:50} ]</pre>
-  <form>
+    <form>
 
-    <input list="nombres" type="text" id="input5a" placeholder="Alicia">
-    <input type="number" id="input5b" placeholder="31" size="3">
-    <button type="button" onclick="añadirPersonaALaLista('input5a','input5b');">Añadir</button>
-    <button type="button" onclick="borrarPersonas()">Borrar todos</button><br>
-    <datalist id="nombres">
-      <option value="John"></option>
-      <option value="Miguel"></option>
-      <option value="Joaquín"></option>
-      <option value="Amaia"></option>
-      <option value="Marta"></option>
-    </datalist>
-    <button type="button" onclick="ejercicio5()">Ejercicio 5</button>
-  </form>
+      <input list="nombres" type="text" id="inputNombre" placeholder="Alicia" required>
+      <input type="number" id="inputEdad" placeholder="31" size="3" required>
+      <button type="button" onclick="intentarAñadirPersona();">Añadir</button>
+      <button type="button" onclick="borrarPersonas()">Borrar todos</button>
+      <span id="mensajeErrorEj5"></span><br>
+      <datalist id="nombres">
+        <option value="John"></option>
+        <option value="Miguel"></option>
+        <option value="Joaquín"></option>
+        <option value="Amaia"></option>
+        <option value="Marta"></option>
+      </datalist>
+      <button type="button" onclick="ejercicio5()">Ejercicio 5</button>
+    </form>
 
-  <p>Input del usuario: <span id="readInput5"></span></p>
-  <p>EJERCICIO 5: Personas ordenadas según edad y nombre: <span id="result5"></span></p>
-  <hr>
-
+    <p>Input del usuario: <span id="readInput5"></span></p>
+    <p>EJERCICIO 5: Personas ordenadas según edad y nombre: <span id="result5"></span></p>
+    <hr>
+  </section>
 
 </body>
 
